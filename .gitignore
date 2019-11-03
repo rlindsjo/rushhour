@@ -2,6 +2,10 @@
 .gradle
 gradlew
 gradlew.bat
+gradle/wrapper/gradle-wrapper.jar
+
+# Ignoe IntelliJ directory
+.idea
 
 # Ignore Gradle build output directory
 build
