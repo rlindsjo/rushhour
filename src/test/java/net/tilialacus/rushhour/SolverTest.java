@@ -15,4 +15,10 @@ public class SolverTest {
         assertThat(solver.getNrPaths(), is(1));
     }
 
+    @Test
+    public void noDuplicates() {
+        solver.add(State.empty().add(0, 0, Cars.GRAY, true));
+        solver.add(State.empty().add(0, 0, Cars.GRAY, true));
+        assertThat(solver.getNrPaths(), is(1));
+    }
 }
