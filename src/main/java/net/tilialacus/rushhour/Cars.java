@@ -3,7 +3,7 @@ package net.tilialacus.rushhour;
 public enum Cars {
     GRAY,
     BROWN,
-    LIGHT_BLE,
+    LIGHT_BLUE,
     LIGHT_GREEN,
     YELLOW,
     RED,
@@ -25,6 +25,10 @@ public enum Cars {
     }
     Cars(int size) {
         this.size = size;
+    }
+
+    public static Cars resolve(char c) {
+        return Cars.values()[c - 'A'];
     }
 
     char identifier() {
