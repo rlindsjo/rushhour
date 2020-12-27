@@ -132,4 +132,8 @@ public class State {
     public int hashCode() {
         return Arrays.hashCode(data);
     }
+
+    public State getParent() {
+        return parent;
+    }
 }
