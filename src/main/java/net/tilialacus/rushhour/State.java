@@ -81,4 +81,8 @@ public class State {
         }
         return states;
     }
+
+    public boolean isSolved() {
+        return data[SIZE - 1 + 2 * SIZE ] == Cars.RED.identifier();
+    }
 }
