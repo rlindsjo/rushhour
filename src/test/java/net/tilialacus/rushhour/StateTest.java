@@ -19,7 +19,7 @@ public class StateTest {
     public void setBoard() {
         State state = empty()
                 .add(1,2 , Cars.GRAY, true);
-        assertThat(state.toString(), is("      \n      \n AA   \n      \n      \n      \n"));
+        assertThat(state.toString(), is("      \n      \n GG   \n      \n      \n      \n"));
         assertFalse(state.isSolved());
     }
 
@@ -40,9 +40,9 @@ public class StateTest {
 
         assertThat(options.stream().map(State::toString).collect(Collectors.toSet()),
                 hasItems(
-                        "B     \nBAA   \n      \n      \n      \n      \n",
-                        "      \n AA   \nB     \nB     \n      \n      \n",
-                        "      \nB AA  \nB     \n      \n      \n      \n"
+                        "J     \nJGG   \n      \n      \n      \n      \n",
+                        "      \n GG   \nJ     \nJ     \n      \n      \n",
+                        "      \nJ GG  \nJ     \n      \n      \n      \n"
                         ));
     }
 

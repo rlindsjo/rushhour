@@ -2,15 +2,19 @@ package net.tilialacus.rushhour;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
+import java.util.Set;
 
 import static java.util.Collections.reverse;
 
 public class Solver {
 
     private Queue<State> queue = new LinkedList();
+
+    private Set<State> seen = new HashSet<>();
 
     public void add(State state) {
         if (!queue.contains(state)) {
@@ -29,7 +33,9 @@ public class Solver {
                 if (option.isSolved()) {
                     return trace(option);
                 } else {
-                    queue.add(option);
+                    if (seen.add(option)) {
+                        queue.add(option);
+                    }
                 }
             }
         }

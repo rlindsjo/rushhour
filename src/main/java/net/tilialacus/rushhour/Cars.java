@@ -1,38 +1,45 @@
 package net.tilialacus.rushhour;
 
 public enum Cars {
-    GRAY,
-    BROWN,
-    LIGHT_BLUE,
-    LIGHT_GREEN,
-    YELLOW,
-    RED,
-    PINK,
-    PURPLE,
-    OLIVE,
-    BEIGE,
-    ORANGE,
-    GREEN,
-    LAVENDEL(3),
-    BLUE(3),
-    DARK_YELLOW(3),
-    AZURE(3);
+    GRAY('G'),
+    BROWN('J'),
+    LIGHT_BLUE('C'),
+    LIGHT_GREEN('A'),
+    YELLOW('I'),
+    RED('X'),
+    PINK('D'),
+    PURPLE('E'),
+    OLIVE('K'),
+    BEIGE('H'),
+    ORANGE('B'),
+    GREEN('F'),
+    LAVENDEL('P', 3),
+    BLUE('Q', 3),
+    DARK_YELLOW('O', 3),
+    CYAN('R', 3);
 
+    private final char identifier;
     private final int size;
 
-    Cars() {
-        this(2);
+    Cars(char identifier) {
+        this(identifier, 2);
     }
-    Cars(int size) {
+    Cars(char identifier, int size) {
+        this.identifier = identifier;
         this.size = size;
     }
 
     public static Cars resolve(char c) {
-        return Cars.values()[c - 'A'];
+        for (Cars car : Cars.values()) {
+            if (car.identifier == c) {
+                return car;
+            }
+        }
+        throw new IllegalArgumentException("No car " +  c);
     }
 
     char identifier() {
-        return (char) ('A' + ordinal());
+        return identifier;
     }
 
     public int getSize() {
