@@ -34,9 +34,8 @@ public class SolverTest {
 
         assertThat(solved.stream().map(State::toString).collect(Collectors.toList()),
                 is(Arrays.asList(
-                        "      \n      \n  FF  \n      \n      \n      \n",
-                        "      \n      \n   FF \n      \n      \n      \n",
-                        "      \n      \n    FF\n      \n      \n      \n"
+                        "      \n      \n  XX  \n      \n      \n      \n",
+                        "      \n      \n    XX\n      \n      \n      \n"
                 )));
 
     }
@@ -63,7 +62,7 @@ public class SolverTest {
         List<State> solved = solver.solve();
 
         for (int i = 0; i < solved.size(); i++) {
-            System.err.println(i);
+            System.err.println(i + " " + solved.get(i).getDescription());
             System.err.println(solved.get(i));
         }
     }

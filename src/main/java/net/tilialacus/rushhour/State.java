@@ -2,7 +2,6 @@ package net.tilialacus.rushhour;
 
 import java.util.Arrays;
 import java.util.HashSet;
-import java.util.Objects;
 import java.util.Set;
 
 public class State {
@@ -11,6 +10,7 @@ public class State {
     private static final char EMPTY = 0;
     private final State parent;
     private char[] data = new char[SIZE * SIZE];
+    private String description;
 
     public State() {
         this.parent = null;
@@ -20,8 +20,13 @@ public class State {
         return new State();
     }
 
-    public State copy() {
-        return new State(this, true);
+    public State copy(String description) {
+        return new State(this, true).description(description);
+    }
+
+    private State description(String description) {
+        this.description = description;
+        return this;
     }
 
     private State(State source, boolean link) {
@@ -48,6 +53,10 @@ public class State {
         return data[x+y*SIZE] == EMPTY;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
     @Override
     public String toString() {
         StringBuilder b = new StringBuilder();
@@ -72,29 +81,29 @@ public class State {
                 if (data[x + y * SIZE] != EMPTY) {
                     Cars car = Cars.resolve(get(x, y));
                     if (get(x + car.getSize() - 1, y) == car.identifier()) { // horisontal
-                        if (free(x - 1, y)) {
-                            states.add(this.copy()
-                                    .set(x - 1, y, car.identifier())
-                                    .set(x + car.getSize() - 1, y, EMPTY)
+                        for (int i = x - 1; free(i, y); i--) {
+                            states.add(this.copy(car.identifier() + "\u2190" + (x-i))
+                                    .line(x, y, true, EMPTY, car.getSize())
+                                    .line(i, y, true, car.identifier(), car.getSize())
                             );
                         }
-                        if (free( x + car.getSize(), y)) {
-                            states.add(this.copy()
-                                    .set(x , y, EMPTY)
-                                    .set(x + car.getSize(), y, car.identifier())
+                        for (int i = x + 1; free(i + car.getSize() - 1, y); i++) {
+                            states.add(this.copy(car.identifier() + "\u2192" + (i - x))
+                                    .line(x, y, true, EMPTY, car.getSize())
+                                    .line(i, y, true, car.identifier(), car.getSize())
                             );
                         }
                     } else if (get(x, y + car.getSize() - 1) == car.identifier()) { // vertical
-                        if (free(x, y - 1)) {
-                            states.add(this.copy()
-                                    .set(x, y - 1, car.identifier())
-                                    .set(x, y + car.getSize() - 1, EMPTY)
+                        for (int i = y - 1; free(x, i); i--) {
+                            states.add(this.copy(car.identifier() + "\u2191" + (y - i))
+                                    .line(x, y, false, EMPTY, car.getSize())
+                                    .line(x, i, false, car.identifier(), car.getSize())
                             );
                         }
-                        if (free(x, y + car.getSize())) {
-                            states.add(this.copy()
-                                    .set(x, y, EMPTY)
-                                    .set(x, y + car.getSize(), car.identifier())
+                        for (int i = y + 1; free(x, i + car.getSize() - 1); i++) {
+                            states.add(this.copy(car.identifier() + "\u2193" + (i - y))
+                                    .line(x, y, false, EMPTY, car.getSize())
+                                    .line(x, i, false, car.identifier(), car.getSize())
                             );
                         }
                     }
@@ -109,15 +118,19 @@ public class State {
     }
 
     public State add(int x, int y, Cars car, boolean horisontal) {
-        State newState = new State(this, false);
-        for (int i = 0; i < car.getSize(); i++) {
+        return new State(this, false)
+                .line(x, y, horisontal, car.identifier(), car.getSize());
+    }
+
+    private State line(int x, int y, boolean horisontal, char identifier, int size) {
+        for (int i = 0; i < size; i++) {
             if (horisontal) {
-                newState.set(x + i, y, car.identifier());
+                set(x + i, y, identifier);
             } else {
-                newState.set(x, y + i, car.identifier());
+                set(x, y + i, identifier);
             }
         }
-        return newState;
+        return this;
     }
 
     @Override
