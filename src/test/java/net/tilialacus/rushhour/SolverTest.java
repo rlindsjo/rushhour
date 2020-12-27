@@ -4,6 +4,7 @@ import org.junit.Test;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import static org.hamcrest.CoreMatchers.is;
@@ -61,9 +62,11 @@ public class SolverTest {
 
         List<State> solved = solver.solve();
 
-        for (int i = 0; i < solved.size(); i++) {
-            System.err.println(i + " " + solved.get(i).getDescription());
-            System.err.println(solved.get(i));
-        }
+        assertThat(solved.stream()
+                        .map(State::getDescription)
+                        .filter(Objects::nonNull)
+                        .collect(Collectors.joining(",")),
+                is("B↓1,D↑2,X←1,G↑1,J←1,A↓2,K←1,O←1,C←2,P↑1,E↑2,I↑2,H→2,B↓1,A↓1,X→2,F↑3,X←2,A↑1,B↑1,H←3,P↓2,I↓1,E↓1,C→1,B↓1,O→1,A↑2,X→3,A↓2,O←1,E↑1,X→1")
+        );
     }
 }
