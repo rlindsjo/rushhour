@@ -18,6 +18,10 @@ public enum Cars {
     DARK_YELLOW('O', 3),
     CYAN('R', 3);
 
+    enum Direction {
+        HORIZONTAL, VERTICAL;
+    };
+
     private final char identifier;
     private final int size;
 

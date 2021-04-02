@@ -1,8 +1,13 @@
 package net.tilialacus.rushhour;
 
+import net.tilialacus.rushhour.Cars.Direction;
+
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
+
+import static net.tilialacus.rushhour.Cars.Direction.HORIZONTAL;
+import static net.tilialacus.rushhour.Cars.Direction.VERTICAL;
 
 public class State {
 
@@ -86,27 +91,27 @@ public class State {
                     if (get(x + car.getSize() - 1, y) == car.identifier()) { // horisontal
                         for (int i = x - 1; free(i, y); i--) {
                             states.add(this.copy(car.identifier() + "\u2190" + (x-i))
-                                    .line(x, y, true, EMPTY, car.getSize())
-                                    .line(i, y, true, car.identifier(), car.getSize())
+                                    .line(x, y, EMPTY, car.getSize(), HORIZONTAL)
+                                    .line(i, y, car.identifier(), car.getSize(), HORIZONTAL)
                             );
                         }
                         for (int i = x + 1; free(i + car.getSize() - 1, y); i++) {
                             states.add(this.copy(car.identifier() + "\u2192" + (i - x))
-                                    .line(x, y, true, EMPTY, car.getSize())
-                                    .line(i, y, true, car.identifier(), car.getSize())
+                                    .line(x, y, EMPTY, car.getSize(), HORIZONTAL)
+                                    .line(i, y, car.identifier(), car.getSize(), HORIZONTAL)
                             );
                         }
                     } else if (get(x, y + car.getSize() - 1) == car.identifier()) { // vertical
                         for (int i = y - 1; free(x, i); i--) {
                             states.add(this.copy(car.identifier() + "\u2191" + (y - i))
-                                    .line(x, y, false, EMPTY, car.getSize())
-                                    .line(x, i, false, car.identifier(), car.getSize())
+                                    .line(x, y, EMPTY, car.getSize(), VERTICAL)
+                                    .line(x, i, car.identifier(), car.getSize(), VERTICAL)
                             );
                         }
                         for (int i = y + 1; free(x, i + car.getSize() - 1); i++) {
                             states.add(this.copy(car.identifier() + "\u2193" + (i - y))
-                                    .line(x, y, false, EMPTY, car.getSize())
-                                    .line(x, i, false, car.identifier(), car.getSize())
+                                    .line(x, y, EMPTY, car.getSize(), VERTICAL)
+                                    .line(x, i, car.identifier(), car.getSize(), VERTICAL)
                             );
                         }
                     }
@@ -120,14 +125,14 @@ public class State {
         return data[SIZE - 1 + 2 * SIZE ] == Cars.RED.identifier();
     }
 
-    public State add(int x, int y, Cars car, boolean horisontal) {
+    public State add(int x, int y, Cars car, Direction direction) {
         return new State(this, false)
-                .line(x, y, horisontal, car.identifier(), car.getSize());
+                .line(x, y, car.identifier(), car.getSize(), direction);
     }
 
-    private State line(int x, int y, boolean horisontal, char identifier, int size) {
+    private State line(int x, int y, char identifier, int size, Direction direction) {
         for (int i = 0; i < size; i++) {
-            if (horisontal) {
+            if (direction == HORIZONTAL) {
                 set(x + i, y, identifier);
             } else {
                 set(x, y + i, identifier);

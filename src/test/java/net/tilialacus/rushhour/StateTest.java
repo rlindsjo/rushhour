@@ -5,6 +5,8 @@ import org.junit.Test;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import static net.tilialacus.rushhour.Cars.Direction.HORIZONTAL;
+import static net.tilialacus.rushhour.Cars.Direction.VERTICAL;
 import static net.tilialacus.rushhour.State.empty;
 import static org.hamcrest.CoreMatchers.hasItems;
 import static org.hamcrest.CoreMatchers.is;
@@ -19,7 +21,7 @@ public class StateTest {
     @Test
     public void setBoard() {
         State state = empty()
-                .add(1,2 , Cars.GRAY, true);
+                .add(1,2 , Cars.GRAY, HORIZONTAL);
         assertThat(state.toString(), is("      \n      \n GG   \n      \n      \n      \n"));
         assertFalse(state.isSolved());
     }
@@ -28,9 +30,9 @@ public class StateTest {
     public void preventConflict() {
 
         State state = empty()
-                .add(1,1 , Cars.GRAY, true);
+                .add(1,1 , Cars.GRAY, HORIZONTAL);
         try {
-            state.add(1, 0, Cars.BROWN, false);
+            state.add(1, 0, Cars.BROWN, VERTICAL);
             fail("Expected exception");
         } catch (IllegalArgumentException e) {
             assertThat(e.getMessage(), is("Conflict at (1,1)"));
@@ -40,15 +42,15 @@ public class StateTest {
     @Test
     public void solved() {
         State state = empty()
-                .add(4,2 , Cars.RED, true);
+                .add(4,2 , Cars.RED, HORIZONTAL);
         assertTrue(state.isSolved());
     }
 
     @Test
     public void freeMove() {
         State state = empty()
-                .add(1,1 , Cars.GRAY, true)
-                .add(0,1 , Cars.BROWN, false);
+                .add(1,1 , Cars.GRAY, HORIZONTAL)
+                .add(0,1 , Cars.BROWN, VERTICAL);
 
         Set<State> options = state.options();
 
@@ -63,11 +65,11 @@ public class StateTest {
     @Test
     public void compares() {
         State state1 = empty()
-                .add(1, 1, Cars.GRAY, true)
-                .add(0, 1, Cars.BROWN, false);
+                .add(1, 1, Cars.GRAY, HORIZONTAL)
+                .add(0, 1, Cars.BROWN, VERTICAL);
         State state2 = empty()
-                .add(1, 1, Cars.GRAY, true)
-                .add(0, 1, Cars.BROWN, false);
+                .add(1, 1, Cars.GRAY, HORIZONTAL)
+                .add(0, 1, Cars.BROWN, VERTICAL);
         assertEquals(state1, state2);
     }
 }
