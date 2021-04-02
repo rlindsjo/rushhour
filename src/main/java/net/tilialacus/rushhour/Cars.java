@@ -33,15 +33,6 @@ public enum Cars {
         this.size = size;
     }
 
-    public static Cars resolve(char c) {
-        for (Cars car : Cars.values()) {
-            if (car.identifier == c) {
-                return car;
-            }
-        }
-        throw new IllegalArgumentException("No car " +  c);
-    }
-
     char identifier() {
         return identifier;
     }

@@ -2,6 +2,7 @@ package net.tilialacus.rushhour;
 
 import org.junit.Test;
 
+import java.util.Collection;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -52,7 +53,7 @@ public class StateTest {
                 .add(1,1 , Cars.GRAY, HORIZONTAL)
                 .add(0,1 , Cars.BROWN, VERTICAL);
 
-        Set<State> options = state.options();
+        Collection<State> options = state.options();
 
         assertThat(options.stream().map(State::toString).collect(Collectors.toSet()),
                 hasItems(
