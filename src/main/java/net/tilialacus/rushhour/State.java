@@ -39,12 +39,11 @@ public class State {
         System.arraycopy(source.data, 0, data, 0, data.length);
     }
 
-    public State set(int x, int y, Car type) {
+    public void set(int x, int y, Car type) {
         if (type != null && data[x+y*SIZE] != EMPTY) {
             throw new IllegalArgumentException("Conflict at (" + x + "," + y + ")");
         }
         data[x+y*SIZE] = type;
-        return this;
     }
 
     public Car get(int x, int y) {
