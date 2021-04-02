@@ -7,8 +7,8 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-import static net.tilialacus.rushhour.Cars.Direction.HORIZONTAL;
-import static net.tilialacus.rushhour.Cars.Direction.VERTICAL;
+import static net.tilialacus.rushhour.Car.Direction.HORIZONTAL;
+import static net.tilialacus.rushhour.Car.Direction.VERTICAL;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
@@ -18,20 +18,20 @@ public class SolverTest {
 
     @Test
     public void addToPaths() {
-        solver.add(State.empty().add(0, 0, Cars.GRAY, HORIZONTAL));
+        solver.add(State.empty().add(0, 0, Car.GRAY, HORIZONTAL));
         assertThat(solver.getNrPaths(), is(1));
     }
 
     @Test
     public void noDuplicates() {
-        solver.add(State.empty().add(0, 0, Cars.GRAY, HORIZONTAL));
-        solver.add(State.empty().add(0, 0, Cars.GRAY, HORIZONTAL));
+        solver.add(State.empty().add(0, 0, Car.GRAY, HORIZONTAL));
+        solver.add(State.empty().add(0, 0, Car.GRAY, HORIZONTAL));
         assertThat(solver.getNrPaths(), is(1));
     }
 
     @Test
     public void findSolution() {
-        solver.add(State.empty().add(2, 2, Cars.RED, HORIZONTAL));
+        solver.add(State.empty().add(2, 2, Car.RED, HORIZONTAL));
 
         List<State> solved = solver.solve();
 
@@ -46,20 +46,20 @@ public class SolverTest {
     @Test
     public void findHardSolution() {
         solver.add(State.empty()
-                .add(1, 2, Cars.RED, HORIZONTAL)
-                .add(2, 0, Cars.LIGHT_GREEN, VERTICAL)
-                .add(3, 0, Cars.DARK_YELLOW, HORIZONTAL)
-                .add(3, 1, Cars.ORANGE, VERTICAL)
-                .add(4, 1, Cars.LIGHT_BLUE, HORIZONTAL)
-                .add(0, 2, Cars.PINK, VERTICAL)
-                .add(4, 2, Cars.LAVENDEL, VERTICAL)
-                .add(5, 2, Cars.PURPLE, VERTICAL)
-                .add(1, 3, Cars.GREEN, VERTICAL)
-                .add(0, 4, Cars.GRAY, VERTICAL)
-                .add(2, 4, Cars.BEIGE, HORIZONTAL)
-                .add(5, 4, Cars.YELLOW, VERTICAL)
-                .add(1, 5, Cars.BROWN, HORIZONTAL)
-                .add(3, 5, Cars.OLIVE, HORIZONTAL)
+                .add(1, 2, Car.RED, HORIZONTAL)
+                .add(2, 0, Car.LIGHT_GREEN, VERTICAL)
+                .add(3, 0, Car.DARK_YELLOW, HORIZONTAL)
+                .add(3, 1, Car.ORANGE, VERTICAL)
+                .add(4, 1, Car.LIGHT_BLUE, HORIZONTAL)
+                .add(0, 2, Car.PINK, VERTICAL)
+                .add(4, 2, Car.LAVENDEL, VERTICAL)
+                .add(5, 2, Car.PURPLE, VERTICAL)
+                .add(1, 3, Car.GREEN, VERTICAL)
+                .add(0, 4, Car.GRAY, VERTICAL)
+                .add(2, 4, Car.BEIGE, HORIZONTAL)
+                .add(5, 4, Car.YELLOW, VERTICAL)
+                .add(1, 5, Car.BROWN, HORIZONTAL)
+                .add(3, 5, Car.OLIVE, HORIZONTAL)
       );
 
         List<State> solved = solver.solve();

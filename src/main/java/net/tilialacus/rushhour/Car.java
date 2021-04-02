@@ -1,6 +1,6 @@
 package net.tilialacus.rushhour;
 
-public enum Cars {
+public enum Car {
     GRAY('G'),
     BROWN('J'),
     LIGHT_BLUE('C'),
@@ -25,10 +25,10 @@ public enum Cars {
     private final char identifier;
     private final int size;
 
-    Cars(char identifier) {
+    Car(char identifier) {
         this(identifier, 2);
     }
-    Cars(char identifier, int size) {
+    Car(char identifier, int size) {
         this.identifier = identifier;
         this.size = size;
     }
