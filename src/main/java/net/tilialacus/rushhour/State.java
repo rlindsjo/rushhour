@@ -35,6 +35,9 @@ public class State {
     }
 
     public State set(int x, int y, char type) {
+        if (type != EMPTY && data[x+y*SIZE] != 0) {
+            throw new IllegalArgumentException("Conflict at (" + x + "," + y + ")");
+        }
         data[x+y*SIZE] = type;
         return this;
     }

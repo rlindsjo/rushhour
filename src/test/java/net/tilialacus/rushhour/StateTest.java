@@ -12,6 +12,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 public class StateTest {
 
@@ -21,6 +22,19 @@ public class StateTest {
                 .add(1,2 , Cars.GRAY, true);
         assertThat(state.toString(), is("      \n      \n GG   \n      \n      \n      \n"));
         assertFalse(state.isSolved());
+    }
+
+    @Test
+    public void preventConflict() {
+
+        State state = empty()
+                .add(1,1 , Cars.GRAY, true);
+        try {
+            state.add(1, 0, Cars.BROWN, false);
+            fail("Expected exception");
+        } catch (IllegalArgumentException e) {
+            assertThat(e.getMessage(), is("Conflict at (1,1)"));
+        }
     }
 
     @Test
