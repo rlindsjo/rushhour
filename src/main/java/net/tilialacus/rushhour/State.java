@@ -5,6 +5,8 @@ import net.tilialacus.rushhour.Car.Direction;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.LinkedList;
+import java.util.List;
 
 import static net.tilialacus.rushhour.Car.Direction.HORIZONTAL;
 import static net.tilialacus.rushhour.Car.Direction.VERTICAL;
@@ -17,7 +19,7 @@ public class State {
     private Car[] data = new Car[SIZE * SIZE];
     private String description;
 
-    public State() {
+    private State() {
         this.parent = null;
     }
 
@@ -25,7 +27,7 @@ public class State {
         return new State();
     }
 
-    public State copy(String description) {
+    private State copy(String description) {
         return new State(this, true).description(description);
     }
 
@@ -39,14 +41,14 @@ public class State {
         System.arraycopy(source.data, 0, data, 0, data.length);
     }
 
-    public void set(int x, int y, Car type) {
+    private void set(int x, int y, Car type) {
         if (type != null && data[x+y*SIZE] != EMPTY) {
             throw new IllegalArgumentException("Conflict at (" + x + "," + y + ")");
         }
         data[x+y*SIZE] = type;
     }
 
-    public Car get(int x, int y) {
+    private Car get(int x, int y) {
         if (x < 0 || x >= SIZE || y < 0 || y >= SIZE) {
             return EMPTY;
         }
@@ -121,7 +123,7 @@ public class State {
     }
 
     public boolean isSolved() {
-        return data[SIZE - 1 + 2 * SIZE ] == Car.RED;
+        return get(SIZE - 1, 2) == Car.RED;
     }
 
     public State add(int x, int y, Car car, Direction direction) {
@@ -153,7 +155,9 @@ public class State {
         return Arrays.hashCode(data);
     }
 
-    public State getParent() {
-        return parent;
+    public List<State> getPath() {
+        List<State> base = parent != null ? parent.getPath() : new LinkedList<>();
+        base.add(this);
+        return base;
     }
 }

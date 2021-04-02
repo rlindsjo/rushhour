@@ -1,14 +1,10 @@
 package net.tilialacus.rushhour;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 import java.util.Set;
-
-import static java.util.Collections.reverse;
 
 public class Solver {
 
@@ -42,12 +38,6 @@ public class Solver {
     }
 
     private List<State> trace(State state) {
-        List<State> result = new ArrayList();
-        while (state != null) {
-            result.add(state);
-            state = state.getParent();
-        }
-        reverse(result);
-        return result;
+        return state.getPath();
     }
 }
