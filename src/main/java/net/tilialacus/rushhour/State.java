@@ -17,7 +17,7 @@ public class State {
     private static final Car EMPTY = null;
     private final State parent;
     private Car[] data = new Car[SIZE * SIZE];
-    private String description;
+    private Move move;
 
     private State() {
         this.parent = null;
@@ -27,12 +27,12 @@ public class State {
         return new State();
     }
 
-    private State copy(String description) {
-        return new State(this, true).description(description);
+    private State copy(Move move) {
+        return new State(this, true).description(move);
     }
 
-    private State description(String description) {
-        this.description = description;
+    private State description(Move move) {
+        this.move = move;
         return this;
     }
 
@@ -62,8 +62,8 @@ public class State {
         return data[x+y*SIZE] == EMPTY;
     }
 
-    public String getDescription() {
-        return description;
+    public Move getMove() {
+        return move;
     }
 
     @Override
@@ -91,26 +91,26 @@ public class State {
                     Car car = get(x, y);
                     if (get(x + car.getSize() - 1, y) == car) { // horisontal
                         for (int i = x - 1; free(i, y); i--) {
-                            states.add(this.copy(car.identifier() + "\u2190" + (x-i))
+                            states.add(this.copy(new Move(car, '\u2190', x-i))
                                     .line(x, y, EMPTY, car.getSize(), HORIZONTAL)
                                     .line(i, y, car, car.getSize(), HORIZONTAL)
                             );
                         }
                         for (int i = x + 1; free(i + car.getSize() - 1, y); i++) {
-                            states.add(this.copy(car.identifier() + "\u2192" + (i - x))
+                            states.add(this.copy(new Move(car, '\u2192', i - x))
                                     .line(x, y, EMPTY, car.getSize(), HORIZONTAL)
                                     .line(i, y, car, car.getSize(), HORIZONTAL)
                             );
                         }
                     } else if (get(x, y + car.getSize() - 1) == car) { // vertical
                         for (int i = y - 1; free(x, i); i--) {
-                            states.add(this.copy(car.identifier() + "\u2191" + (y - i))
+                            states.add(this.copy(new Move(car, '\u2191', y - i))
                                     .line(x, y, EMPTY, car.getSize(), VERTICAL)
                                     .line(x, i, car, car.getSize(), VERTICAL)
                             );
                         }
                         for (int i = y + 1; free(x, i + car.getSize() - 1); i++) {
-                            states.add(this.copy(car.identifier() + "\u2193" + (i - y))
+                            states.add(this.copy(new Move(car, '\u2193', i - y))
                                     .line(x, y, EMPTY, car.getSize(), VERTICAL)
                                     .line(x, i, car, car.getSize(), VERTICAL)
                             );
@@ -159,5 +159,22 @@ public class State {
         List<State> base = parent != null ? parent.getPath() : new LinkedList<>();
         base.add(this);
         return base;
+    }
+
+    public static class Move {
+        private final Car car;
+        private final char direction;
+        private final int steps;
+
+        private Move(Car car, char direction, int steps) {
+            this.car = car;
+            this.direction = direction;
+            this.steps = steps;
+        }
+
+        @Override
+        public String toString() {
+            return new StringBuilder().append(car.identifier()).append(direction).append(steps).toString();
+        }
     }
 }
