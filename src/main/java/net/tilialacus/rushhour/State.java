@@ -1,6 +1,7 @@
 package net.tilialacus.rushhour;
 
 import net.tilialacus.rushhour.Car.Direction;
+import net.tilialacus.rushhour.Car.Move;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -88,26 +89,26 @@ public class State {
                     Car car = get(x, y);
                     if (get(x + car.getSize() - 1, y) == car) { // horisontal
                         for (int i = x - 1; free(i, y); i--) {
-                            states.add(this.copy(Move.left(car, x-i))
+                            states.add(this.copy(car.left(x-i))
                                     .line(x, y, EMPTY, car.getSize(), HORIZONTAL)
                                     .line(i, y, car, car.getSize(), HORIZONTAL)
                             );
                         }
                         for (int i = x + 1; free(i + car.getSize() - 1, y); i++) {
-                            states.add(this.copy(Move.right(car, i - x))
+                            states.add(this.copy(car.right(i - x))
                                     .line(x, y, EMPTY, car.getSize(), HORIZONTAL)
                                     .line(i, y, car, car.getSize(), HORIZONTAL)
                             );
                         }
                     } else if (get(x, y + car.getSize() - 1) == car) { // vertical
                         for (int i = y - 1; free(x, i); i--) {
-                            states.add(this.copy(Move.up(car, y - i))
+                            states.add(this.copy(car.up(y - i))
                                     .line(x, y, EMPTY, car.getSize(), VERTICAL)
                                     .line(x, i, car, car.getSize(), VERTICAL)
                             );
                         }
                         for (int i = y + 1; free(x, i + car.getSize() - 1); i++) {
-                            states.add(this.copy(Move.down(car, i - y))
+                            states.add(this.copy(car.down(i - y))
                                     .line(x, y, EMPTY, car.getSize(), VERTICAL)
                                     .line(x, i, car, car.getSize(), VERTICAL)
                             );
@@ -156,38 +157,5 @@ public class State {
         List<State> base = parent != null ? parent.getPath() : new LinkedList<>();
         base.add(this);
         return base;
-    }
-
-    public static class Move {
-        private final Car car;
-        private final char direction;
-        private final int steps;
-
-        public static Move left(Car car, int steps) {
-            return new Move(car, '\u2190', steps);
-        }
-
-        public static Move right(Car car, int steps) {
-            return new Move(car, '\u2192', steps);
-        }
-
-        public static Move up(Car car, int steps) {
-            return new Move(car, '\u2191', steps);
-        }
-
-        public static Move down(Car car, int steps) {
-            return new Move(car, '\u2193', steps);
-        }
-
-        private Move(Car car, char direction, int steps) {
-            this.car = car;
-            this.direction = direction;
-            this.steps = steps;
-        }
-
-        @Override
-        public String toString() {
-            return new StringBuilder().append(car.identifier()).append(direction).append(steps).toString();
-        }
     }
 }
