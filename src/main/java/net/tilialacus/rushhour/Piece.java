@@ -1,22 +1,24 @@
 package net.tilialacus.rushhour;
 
-public enum Car {
-    GRAY('G'),
-    BROWN('J'),
-    LIGHT_BLUE('C'),
-    LIGHT_GREEN('A'),
-    YELLOW('I'),
-    RED('X'),
-    PINK('D'),
-    PURPLE('E'),
-    OLIVE('K'),
-    BEIGE('H'),
-    ORANGE('B'),
-    GREEN('F'),
-    LAVENDEL('P', 3),
-    BLUE('Q', 3),
-    DARK_YELLOW('O', 3),
-    CYAN('R', 3);
+import static net.tilialacus.rushhour.Piece.Type.CAR;
+
+public enum Piece {
+    GRAY('G', CAR),
+    BROWN('J', CAR),
+    LIGHT_BLUE('C', CAR),
+    LIGHT_GREEN('A', CAR),
+    YELLOW('I', CAR),
+    RED('X', CAR),
+    PINK('D', CAR),
+    PURPLE('E', CAR),
+    OLIVE('K', CAR),
+    BEIGE('H', CAR),
+    ORANGE('B', CAR),
+    GREEN('F', CAR),
+    LAVENDEL('P', Type.TRUCK),
+    BLUE('Q', Type.TRUCK),
+    DARK_YELLOW('O', Type.TRUCK),
+    CYAN('R', Type.TRUCK);
 
     enum Direction {
         HORIZONTAL, VERTICAL;
@@ -25,12 +27,9 @@ public enum Car {
     private final char identifier;
     private final int size;
 
-    Car(char identifier) {
-        this(identifier, 2);
-    }
-    Car(char identifier, int size) {
+    Piece(char identifier, Type type) {
         this.identifier = identifier;
-        this.size = size;
+        this.size = type == CAR ? 2 : 3;
     }
 
     char identifier() {
@@ -57,20 +56,22 @@ public enum Car {
         return new Move(this, '\u2193', steps);
     }
 
+    public enum Type {CAR, TRUCK}
+
     public static class Move {
-        private final Car car;
+        private final Piece piece;
         private final char direction;
         private final int steps;
 
-        private Move(Car car, char direction, int steps) {
-            this.car = car;
+        private Move(Piece piece, char direction, int steps) {
+            this.piece = piece;
             this.direction = direction;
             this.steps = steps;
         }
 
         @Override
         public String toString() {
-            return new StringBuilder().append(car.identifier()).append(direction).append(steps).toString();
+            return new StringBuilder().append(piece.identifier()).append(direction).append(steps).toString();
         }
     }
 }

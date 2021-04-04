@@ -1,7 +1,7 @@
 package net.tilialacus.rushhour;
 
-import net.tilialacus.rushhour.Car.Direction;
-import net.tilialacus.rushhour.Car.Move;
+import net.tilialacus.rushhour.Piece.Direction;
+import net.tilialacus.rushhour.Piece.Move;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -9,14 +9,14 @@ import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 
-import static net.tilialacus.rushhour.Car.Direction.HORIZONTAL;
-import static net.tilialacus.rushhour.Car.Direction.VERTICAL;
+import static net.tilialacus.rushhour.Piece.Direction.HORIZONTAL;
+import static net.tilialacus.rushhour.Piece.Direction.VERTICAL;
 
 public class State {
 
     private static final int SIZE = 6;
-    private static final Car EMPTY = null;
-    private Car[] data = new Car[SIZE * SIZE];
+    private static final Piece EMPTY = null;
+    private Piece[] data = new Piece[SIZE * SIZE];
     private final Moves moves;
 
     private State() {
@@ -36,14 +36,14 @@ public class State {
         System.arraycopy(source.data, 0, data, 0, data.length);
     }
 
-    private void set(int x, int y, Car type) {
+    private void set(int x, int y, Piece type) {
         if (type != null && data[x+y*SIZE] != EMPTY) {
             throw new IllegalArgumentException("Conflict at (" + x + "," + y + ")");
         }
         data[x+y*SIZE] = type;
     }
 
-    private Car get(int x, int y) {
+    private Piece get(int x, int y) {
         if (x < 0 || x >= SIZE || y < 0 || y >= SIZE) {
             return EMPTY;
         }
@@ -62,7 +62,7 @@ public class State {
         StringBuilder b = new StringBuilder();
         for (int y = 0; y < SIZE; y++) {
             for (int x = 0; x < SIZE; x++) {
-                Car c = data[x + y * SIZE];
+                Piece c = data[x + y * SIZE];
                 if (c != EMPTY) {
                     b.append(c.identifier());
                 } else {
@@ -79,31 +79,31 @@ public class State {
         for (int y = 0; y < SIZE; y++) {
             for (int x = 0; x < SIZE; x++) {
                 if (data[x + y * SIZE] != EMPTY) {
-                    Car car = get(x, y);
-                    if (get(x + car.getSize() - 1, y) == car) { // horisontal
+                    Piece piece = get(x, y);
+                    if (get(x + piece.getSize() - 1, y) == piece) { // horisontal
                         for (int i = x - 1; free(i, y); i--) {
-                            states.add(this.copy(car.left(x-i))
-                                    .line(x, y, EMPTY, car.getSize(), HORIZONTAL)
-                                    .line(i, y, car, car.getSize(), HORIZONTAL)
+                            states.add(this.copy(piece.left(x-i))
+                                    .line(x, y, EMPTY, piece.getSize(), HORIZONTAL)
+                                    .line(i, y, piece, piece.getSize(), HORIZONTAL)
                             );
                         }
-                        for (int i = x + 1; free(i + car.getSize() - 1, y); i++) {
-                            states.add(this.copy(car.right(i - x))
-                                    .line(x, y, EMPTY, car.getSize(), HORIZONTAL)
-                                    .line(i, y, car, car.getSize(), HORIZONTAL)
+                        for (int i = x + 1; free(i + piece.getSize() - 1, y); i++) {
+                            states.add(this.copy(piece.right(i - x))
+                                    .line(x, y, EMPTY, piece.getSize(), HORIZONTAL)
+                                    .line(i, y, piece, piece.getSize(), HORIZONTAL)
                             );
                         }
-                    } else if (get(x, y + car.getSize() - 1) == car) { // vertical
+                    } else if (get(x, y + piece.getSize() - 1) == piece) { // vertical
                         for (int i = y - 1; free(x, i); i--) {
-                            states.add(this.copy(car.up(y - i))
-                                    .line(x, y, EMPTY, car.getSize(), VERTICAL)
-                                    .line(x, i, car, car.getSize(), VERTICAL)
+                            states.add(this.copy(piece.up(y - i))
+                                    .line(x, y, EMPTY, piece.getSize(), VERTICAL)
+                                    .line(x, i, piece, piece.getSize(), VERTICAL)
                             );
                         }
-                        for (int i = y + 1; free(x, i + car.getSize() - 1); i++) {
-                            states.add(this.copy(car.down(i - y))
-                                    .line(x, y, EMPTY, car.getSize(), VERTICAL)
-                                    .line(x, i, car, car.getSize(), VERTICAL)
+                        for (int i = y + 1; free(x, i + piece.getSize() - 1); i++) {
+                            states.add(this.copy(piece.down(i - y))
+                                    .line(x, y, EMPTY, piece.getSize(), VERTICAL)
+                                    .line(x, i, piece, piece.getSize(), VERTICAL)
                             );
                         }
                     }
@@ -114,20 +114,20 @@ public class State {
     }
 
     public boolean isSolved() {
-        return get(SIZE - 1, 2) == Car.RED;
+        return get(SIZE - 1, 2) == Piece.RED;
     }
 
-    public State add(int x, int y, Car car, Direction direction) {
+    public State add(Piece piece, int x, int y, Direction direction) {
         return new State(this, null)
-                .line(x, y, car, car.getSize(), direction);
+                .line(x, y, piece, piece.getSize(), direction);
     }
 
-    private State line(int x, int y, Car car, int size, Direction direction) {
+    private State line(int x, int y, Piece piece, int size, Direction direction) {
         for (int i = 0; i < size; i++) {
             if (direction == HORIZONTAL) {
-                set(x + i, y, car);
+                set(x + i, y, piece);
             } else {
-                set(x, y + i, car);
+                set(x, y + i, piece);
             }
         }
         return this;

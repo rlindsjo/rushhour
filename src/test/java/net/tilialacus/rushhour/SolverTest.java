@@ -6,8 +6,8 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-import static net.tilialacus.rushhour.Car.Direction.HORIZONTAL;
-import static net.tilialacus.rushhour.Car.Direction.VERTICAL;
+import static net.tilialacus.rushhour.Piece.Direction.HORIZONTAL;
+import static net.tilialacus.rushhour.Piece.Direction.VERTICAL;
 import static org.hamcrest.CoreMatchers.hasItems;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
@@ -15,13 +15,13 @@ import static org.junit.Assert.assertThat;
 public class SolverTest {
     @Test
     public void addToPaths() {
-        Solver solver = new Solver(State.empty().add(0, 0, Car.GRAY, HORIZONTAL));
+        Solver solver = new Solver(State.empty().add(Piece.GRAY, 0, 0, HORIZONTAL));
         assertThat(solver.getNrPaths(), is(1));
     }
 
     @Test
     public void findSolution() {
-        Solver solver = new Solver(State.empty().add(2, 2, Car.RED, HORIZONTAL));
+        Solver solver = new Solver(State.empty().add(Piece.RED, 2, 2, HORIZONTAL));
 
         List<State> solved = solver.solve();
 
@@ -30,7 +30,7 @@ public class SolverTest {
                         .getMoves()
                         .stream()
                         .filter(Objects::nonNull)
-                        .map(Car.Move::toString)
+                        .map(Piece.Move::toString)
                         .collect(Collectors.joining(",")),
                 is("X→2"));
     }
@@ -38,20 +38,20 @@ public class SolverTest {
     @Test
     public void findHardSolution() {
         Solver solver = new Solver(State.empty()
-                .add(1, 2, Car.RED, HORIZONTAL)
-                .add(2, 0, Car.LIGHT_GREEN, VERTICAL)
-                .add(3, 0, Car.DARK_YELLOW, HORIZONTAL)
-                .add(3, 1, Car.ORANGE, VERTICAL)
-                .add(4, 1, Car.LIGHT_BLUE, HORIZONTAL)
-                .add(0, 2, Car.PINK, VERTICAL)
-                .add(4, 2, Car.LAVENDEL, VERTICAL)
-                .add(5, 2, Car.PURPLE, VERTICAL)
-                .add(1, 3, Car.GREEN, VERTICAL)
-                .add(0, 4, Car.GRAY, VERTICAL)
-                .add(2, 4, Car.BEIGE, HORIZONTAL)
-                .add(5, 4, Car.YELLOW, VERTICAL)
-                .add(1, 5, Car.BROWN, HORIZONTAL)
-                .add(3, 5, Car.OLIVE, HORIZONTAL)
+                .add(Piece.RED, 1, 2, HORIZONTAL)
+                .add(Piece.LIGHT_GREEN, 2, 0, VERTICAL)
+                .add(Piece.DARK_YELLOW, 3, 0, HORIZONTAL)
+                .add(Piece.ORANGE, 3, 1, VERTICAL)
+                .add(Piece.LIGHT_BLUE, 4, 1, HORIZONTAL)
+                .add(Piece.PINK, 0, 2, VERTICAL)
+                .add(Piece.LAVENDEL, 4, 2, VERTICAL)
+                .add(Piece.PURPLE, 5, 2, VERTICAL)
+                .add(Piece.GREEN, 1, 3, VERTICAL)
+                .add(Piece.GRAY, 0, 4, VERTICAL)
+                .add(Piece.BEIGE, 2, 4, HORIZONTAL)
+                .add(Piece.YELLOW, 5, 4, VERTICAL)
+                .add(Piece.BROWN, 1, 5, HORIZONTAL)
+                .add(Piece.OLIVE, 3, 5, HORIZONTAL)
         );
 
         List<State> solved = solver.solve();
@@ -60,7 +60,7 @@ public class SolverTest {
                         .map(State::getMoves)
                         .map(it -> it.stream()
                                 .filter(Objects::nonNull)
-                                .map(Car.Move::toString)
+                                .map(Piece.Move::toString)
                                 .collect(Collectors.joining(",")))
                         .collect(Collectors.toSet()),
                 hasItems(
