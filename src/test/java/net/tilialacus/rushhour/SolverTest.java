@@ -64,10 +64,7 @@ public class SolverTest {
                                 .collect(Collectors.joining(",")))
                         .collect(Collectors.toSet()),
                 hasItems(
-                        "B↓1,D↑2,X←1,A↓2,O←1,C←2,P↑1,E↑2,G↑1,I↑2,H→2,A↓1,B↓1,X→2,F↑3,X←2,A↑1,B↑1,H←3,B↓1,I↓2,E↓1,O→1,J←1,K←1,P↓2,C→1,A↑2,X→3,A↓1,O←1,E↑1,X→1",
-                        "B↓1,D↑2,X←1,A↓2,O←1,C←2,P↑1,E↑2,G↑1,I↑2,H→2,A↓1,B↓1,X→2,F↑3,X←2,A↑1,B↑1,H←3,B↓1,I↓2,E↓1,O→1,J←1,K←1,P↓2,C→1,A↑2,X→3,A↓2,O←1,E↑1,X→1",
-                        "B↓1,D↑2,X←1,A↓2,O←1,C←2,P↑1,E↑2,G↑1,I↑2,H→2,A↓1,B↓1,X→2,F↑3,X←2,A↑1,B↑1,H←3,B↓1,I↓1,E↓1,O→1,J←1,K←1,P↓2,C→1,A↑2,X→3,A↓1,O←1,E↑1,X→1",
-                        "B↓1,D↑2,X←1,A↓2,O←1,C←2,P↑1,E↑2,G↑1,I↑2,H→2,A↓1,B↓1,X→2,F↑3,X←2,A↑1,B↑1,H←3,B↓1,I↓1,E↓1,O→1,J←1,K←1,P↓2,C→1,A↑2,X→3,A↓2,O←1,E↑1,X→1"
+                        "B↓1,D↑2,X←1,A↓2,O←1,C←2,P↑1,E↑2,G↑1,I↑2,H→2,A↓1,B↓1,X→2,F↑3,X←2,A↑1,B↑1,H←3,B↓1,I↓1,E↓1,O→1,J←1,K←1,P↓2,C→1,A↑2,X→3,A↓1,O←1,E↑1,X→1"
                 )
         );
     }

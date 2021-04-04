@@ -1,14 +1,16 @@
 package net.tilialacus.rushhour;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
 import java.util.Set;
 
+import static java.util.Collections.emptyList;
+
 public class Solver {
-    private List<State> possible = new LinkedList();
+    private Queue<State> possible = new LinkedList();
 
     private Set<State> seen = new HashSet<>();
 
@@ -27,26 +29,15 @@ public class Solver {
     }
 
     public List<State> solve() {
-        List<State> result = new ArrayList<>();
-
-        do {
-            List<State> sameDistance = possible;
-            possible = new LinkedList<>();
-
-            // No solutions?
-            if (sameDistance.isEmpty()) {
-                return Collections.emptyList();
-            }
-            for (State o : sameDistance) {
-                for (State option : o.options()) {
-                    if (option.isSolved()) {
-                        result.add(option);
-                    } else {
-                        add(option);
-                    }
+        while (!possible.isEmpty()) {
+            for (State option : possible.poll().options()) {
+                if (option.isSolved()) {
+                    return Collections.singletonList(option);
+                } else {
+                    add(option);
                 }
             }
-        } while (result.isEmpty());
-        return result;
+        }
+        return emptyList();
     }
 }
