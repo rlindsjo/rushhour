@@ -81,29 +81,29 @@ public class State {
                 if (data[x + y * SIZE] != EMPTY) {
                     Piece piece = get(x, y);
                     if (get(x + piece.getSize() - 1, y) == piece) { // horisontal
-                        for (int i = x - 1; free(i, y); i--) {
-                            states.add(this.copy(piece.left(x-i))
+                        for (int steps = 1; free(x - steps, y); ++steps) {
+                            states.add(this.copy(piece.left(steps))
                                     .line(x, y, EMPTY, piece.getSize(), HORIZONTAL)
-                                    .line(i, y, piece, piece.getSize(), HORIZONTAL)
+                                    .line(x - steps, y, piece, piece.getSize(), HORIZONTAL)
                             );
                         }
-                        for (int i = x + 1; free(i + piece.getSize() - 1, y); i++) {
-                            states.add(this.copy(piece.right(i - x))
+                        for (int steps = 1; free(steps + x  + piece.getSize() - 1, y); ++steps) {
+                            states.add(this.copy(piece.right(steps))
                                     .line(x, y, EMPTY, piece.getSize(), HORIZONTAL)
-                                    .line(i, y, piece, piece.getSize(), HORIZONTAL)
+                                    .line(x + steps, y, piece, piece.getSize(), HORIZONTAL)
                             );
                         }
                     } else if (get(x, y + piece.getSize() - 1) == piece) { // vertical
-                        for (int i = y - 1; free(x, i); i--) {
-                            states.add(this.copy(piece.up(y - i))
+                        for (int steps = 1; free(x, y - steps); ++steps) {
+                            states.add(this.copy(piece.up(steps))
                                     .line(x, y, EMPTY, piece.getSize(), VERTICAL)
-                                    .line(x, i, piece, piece.getSize(), VERTICAL)
+                                    .line(x, y - steps, piece, piece.getSize(), VERTICAL)
                             );
                         }
-                        for (int i = y + 1; free(x, i + piece.getSize() - 1); i++) {
-                            states.add(this.copy(piece.down(i - y))
+                        for (int steps = 1; free(x, steps + y + piece.getSize() - 1); ++steps) {
+                            states.add(this.copy(piece.down(steps))
                                     .line(x, y, EMPTY, piece.getSize(), VERTICAL)
-                                    .line(x, i, piece, piece.getSize(), VERTICAL)
+                                    .line(x, y + steps, piece, piece.getSize(), VERTICAL)
                             );
                         }
                     }
