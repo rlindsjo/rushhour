@@ -4,4 +4,4 @@ When one of my kids got the logic game [Rush Hour&reg;](https://www.thinkfun.com
 trying to make a program to solve the different puzzles.
 
 Initial approach is to simply represent the board as a 36 character array (each piece is represented by different letters)
-and find the shortest path using [Dijkstra's algorithm](https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm).
+and find a shortest path using [Dijkstra's algorithm](https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm).
