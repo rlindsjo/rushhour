@@ -68,4 +68,39 @@ public class SolverTest {
                 )
         );
     }
+
+    @Test
+    public void unsolvableEasy() {
+        Solver solver = new Solver(State.empty()
+                .add(Piece.RED, 1, 2, HORIZONTAL)
+                .add(Piece.LAVENDEL, 5, 0, VERTICAL)
+                .add(Piece.BLUE, 5, 3, VERTICAL)
+        );
+
+        List<State> solved = solver.solve();
+
+        assertThat(solved.size(), is(0));
+    }
+
+    @Test
+    public void unsolvableHard() {
+        Solver solver = new Solver(State.empty()
+                .add(Piece.RED, 0, 1, HORIZONTAL)
+                .add(Piece.LIGHT_GREEN, 0, 3, HORIZONTAL)
+                .add(Piece.BROWN, 0, 4, VERTICAL)
+                .add(Piece.GREEN, 1, 4, VERTICAL)
+                .add(Piece.YELLOW, 2, 0, VERTICAL)
+                .add(Piece.PINK, 2, 2, VERTICAL)
+                .add(Piece.BEIGE, 2, 4, HORIZONTAL)
+                .add(Piece.PURPLE, 2, 5, HORIZONTAL)
+                .add(Piece.LAVENDEL, 3, 0, HORIZONTAL)
+                .add(Piece.OLIVE, 3, 1, VERTICAL)
+                .add(Piece.ORANGE, 3, 3, HORIZONTAL)
+                .add(Piece.BLUE, 5, 2, VERTICAL)
+        );
+
+        List<State> solved = solver.solve();
+
+        assertThat(solved.size(), is(0));
+    }
 }
