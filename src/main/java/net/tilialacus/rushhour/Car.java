@@ -62,22 +62,6 @@ public enum Car {
         private final char direction;
         private final int steps;
 
-        public static Move left(Car car, int steps) {
-            return new Move(car, '\u2190', steps);
-        }
-
-        public static Move right(Car car, int steps) {
-            return new Move(car, '\u2192', steps);
-        }
-
-        public static Move up(Car car, int steps) {
-            return new Move(car, '\u2191', steps);
-        }
-
-        public static Move down(Car car, int steps) {
-            return new Move(car, '\u2193', steps);
-        }
-
         private Move(Car car, char direction, int steps) {
             this.car = car;
             this.direction = direction;

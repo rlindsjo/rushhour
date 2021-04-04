@@ -2,8 +2,6 @@ package net.tilialacus.rushhour;
 
 import org.junit.Test;
 
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -15,7 +13,6 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
 public class SolverTest {
-
     @Test
     public void addToPaths() {
         Solver solver = new Solver(State.empty().add(0, 0, Car.GRAY, HORIZONTAL));
@@ -29,12 +26,13 @@ public class SolverTest {
         List<State> solved = solver.solve();
 
         assertThat(solved.size(), is(1));
-        assertThat(solved.get(0).getPath().stream().map(State::toString).collect(Collectors.toList()),
-                is(Arrays.asList(
-                        "      \n      \n  XX  \n      \n      \n      \n",
-                        "      \n      \n    XX\n      \n      \n      \n"
-                )));
-
+        assertThat(solved.get(0)
+                        .getMoves()
+                        .stream()
+                        .filter(Objects::nonNull)
+                        .map(Car.Move::toString)
+                        .collect(Collectors.joining(",")),
+                is("X→2"));
     }
 
     @Test
@@ -59,18 +57,17 @@ public class SolverTest {
         List<State> solved = solver.solve();
 
         assertThat(solved.stream()
-                        .map(State::getPath)
-                        .map( it -> it.stream()
-                            .map(State::getMove)
-                            .filter(Objects::nonNull)
-                            .map(Car.Move::toString)
-                            .collect(Collectors.joining(",")))
+                        .map(State::getMoves)
+                        .map(it -> it.stream()
+                                .filter(Objects::nonNull)
+                                .map(Car.Move::toString)
+                                .collect(Collectors.joining(",")))
                         .collect(Collectors.toSet()),
                 hasItems(
-                    "B↓1,D↑2,X←1,A↓2,O←1,C←2,P↑1,E↑2,G↑1,I↑2,H→2,A↓1,B↓1,X→2,F↑3,X←2,A↑1,B↑1,H←3,B↓1,I↓2,E↓1,O→1,J←1,K←1,P↓2,C→1,A↑2,X→3,A↓1,O←1,E↑1,X→1",
-                    "B↓1,D↑2,X←1,A↓2,O←1,C←2,P↑1,E↑2,G↑1,I↑2,H→2,A↓1,B↓1,X→2,F↑3,X←2,A↑1,B↑1,H←3,B↓1,I↓2,E↓1,O→1,J←1,K←1,P↓2,C→1,A↑2,X→3,A↓2,O←1,E↑1,X→1",
-                    "B↓1,D↑2,X←1,A↓2,O←1,C←2,P↑1,E↑2,G↑1,I↑2,H→2,A↓1,B↓1,X→2,F↑3,X←2,A↑1,B↑1,H←3,B↓1,I↓1,E↓1,O→1,J←1,K←1,P↓2,C→1,A↑2,X→3,A↓1,O←1,E↑1,X→1",
-                    "B↓1,D↑2,X←1,A↓2,O←1,C←2,P↑1,E↑2,G↑1,I↑2,H→2,A↓1,B↓1,X→2,F↑3,X←2,A↑1,B↑1,H←3,B↓1,I↓1,E↓1,O→1,J←1,K←1,P↓2,C→1,A↑2,X→3,A↓2,O←1,E↑1,X→1"
+                        "B↓1,D↑2,X←1,A↓2,O←1,C←2,P↑1,E↑2,G↑1,I↑2,H→2,A↓1,B↓1,X→2,F↑3,X←2,A↑1,B↑1,H←3,B↓1,I↓2,E↓1,O→1,J←1,K←1,P↓2,C→1,A↑2,X→3,A↓1,O←1,E↑1,X→1",
+                        "B↓1,D↑2,X←1,A↓2,O←1,C←2,P↑1,E↑2,G↑1,I↑2,H→2,A↓1,B↓1,X→2,F↑3,X←2,A↑1,B↑1,H←3,B↓1,I↓2,E↓1,O→1,J←1,K←1,P↓2,C→1,A↑2,X→3,A↓2,O←1,E↑1,X→1",
+                        "B↓1,D↑2,X←1,A↓2,O←1,C←2,P↑1,E↑2,G↑1,I↑2,H→2,A↓1,B↓1,X→2,F↑3,X←2,A↑1,B↑1,H←3,B↓1,I↓1,E↓1,O→1,J←1,K←1,P↓2,C→1,A↑2,X→3,A↓1,O←1,E↑1,X→1",
+                        "B↓1,D↑2,X←1,A↓2,O←1,C←2,P↑1,E↑2,G↑1,I↑2,H→2,A↓1,B↓1,X→2,F↑3,X←2,A↑1,B↑1,H←3,B↓1,I↓1,E↓1,O→1,J←1,K←1,P↓2,C→1,A↑2,X→3,A↓2,O←1,E↑1,X→1"
                 )
         );
     }

@@ -16,13 +16,11 @@ public class State {
 
     private static final int SIZE = 6;
     private static final Car EMPTY = null;
-    private final State parent;
     private Car[] data = new Car[SIZE * SIZE];
-    private final Move move;
+    private final Moves moves;
 
     private State() {
-        this.parent = null;
-        move = null;
+        moves = Moves.NONE;
     }
 
     public static State empty() {
@@ -34,8 +32,7 @@ public class State {
     }
 
     private State(State source, Move move) {
-        this.move = move;
-        this.parent = move != null ? source : null;
+        this.moves = source.moves.add(move);
         System.arraycopy(source.data, 0, data, 0, data.length);
     }
 
@@ -58,10 +55,6 @@ public class State {
             return false;
         }
         return data[x+y*SIZE] == EMPTY;
-    }
-
-    public Move getMove() {
-        return move;
     }
 
     @Override
@@ -153,9 +146,28 @@ public class State {
         return Arrays.hashCode(data);
     }
 
-    public List<State> getPath() {
-        List<State> base = parent != null ? parent.getPath() : new LinkedList<>();
-        base.add(this);
-        return base;
+    public List<Move> getMoves() {
+        return moves.getPath();
+    }
+
+    private static final class Moves {
+        public static final Moves NONE = new Moves(null, null);
+        private final Moves prev;
+        private final Move move;
+
+        private Moves(Moves prev, Move move) {
+            this.prev = prev;
+            this.move = move;
+        }
+
+        public Moves add(Move move) {
+            return new Moves(this, move);
+        }
+
+        public List<Move> getPath() {
+            List<Move> base = prev != null ? prev.getPath() : new LinkedList<>();
+            base.add(this.move);
+            return base;
+        }
     }
 }

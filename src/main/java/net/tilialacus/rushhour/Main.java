@@ -30,9 +30,8 @@ public class Main {
 
         System.err.println(
                 solved.stream()
-                .map(State::getPath)
+                .map(State::getMoves)
                 .map( it -> it.stream()
-                        .map(State::getMove)
                         .filter(Objects::nonNull)
                         .map(Car.Move::toString)
                         .collect(Collectors.joining(",")))
