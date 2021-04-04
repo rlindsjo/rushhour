@@ -1,5 +1,6 @@
 package net.tilialacus.rushhour;
 
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -27,7 +28,7 @@ public class Solver {
             State shortest = queue.remove();
             for (State option : shortest.options()) {
                 if (option.isSolved()) {
-                    return trace(option);
+                    return Collections.singletonList(option);
                 } else {
                     if (seen.add(option)) {
                         queue.add(option);
@@ -35,9 +36,5 @@ public class Solver {
                 }
             }
         }
-    }
-
-    private List<State> trace(State state) {
-        return state.getPath();
     }
 }

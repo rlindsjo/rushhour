@@ -35,7 +35,8 @@ public class SolverTest {
 
         List<State> solved = solver.solve();
 
-        assertThat(solved.stream().map(State::toString).collect(Collectors.toList()),
+        assertThat(solved.size(), is(1));
+        assertThat(solved.get(0).getPath().stream().map(State::toString).collect(Collectors.toList()),
                 is(Arrays.asList(
                         "      \n      \n  XX  \n      \n      \n      \n",
                         "      \n      \n    XX\n      \n      \n      \n"
@@ -64,7 +65,7 @@ public class SolverTest {
 
         List<State> solved = solver.solve();
 
-        assertThat(solved.stream()
+        assertThat(solved.get(0).getPath().stream()
                         .map(State::getMove)
                         .filter(Objects::nonNull)
                         .map(Car.Move::toString)
